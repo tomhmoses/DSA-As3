@@ -284,10 +284,42 @@ public class PLTreeNodeTest
 		assertEquals("Refer to table: ", anyT.toStringInfix(), pltree.toStringInfix());
 		
 	}
-
-	public void woooo()
+	
+	@Test
+	public void testPushOrBelowAnd()
 	{
-		assertEquals("something went wrong", "woo", "woop");
+		NodeType[] typeList = { NodeType.A, NodeType.B, NodeType.OR, NodeType.NOT };
+		PLTreeNodeInterface pltree = PLTreeNode.reversePolishBuilder(typeList);
+		assertEquals("NOT over OR start", "¬(A∨B)", pltree.toStringInfix());
+		pltree.pushNotDown();
+		assertEquals("NOT over OR", "(¬A∧¬B)", pltree.toStringInfix());
+
+		NodeType[] typeList5 = { NodeType.FALSE, NodeType.NOT, NodeType.TRUE, NodeType.NOT, NodeType.AND, NodeType.TRUE, NodeType.Q,
+				NodeType.NOT, NodeType.AND, NodeType.OR };
+		PLTreeNodeInterface pltree5 = PLTreeNode.reversePolishBuilder(typeList5);
+		assertEquals("complicated start", "((¬⊥∧¬⊤)∨(⊤∧¬Q))", pltree5.toStringInfix());
+		pltree5.pushOrBelowAnd();
+		assertEquals("complicated", "(((¬⊥∨⊤)∧(¬⊤∨⊤))∧((¬⊥∨¬Q)∧(¬⊤∨¬Q)))", pltree5.toStringInfix());
+	}
+
+	@Test
+	public void testMakeAndOrRightDeep()
+	{
+		// (X∨Y)∨Z with X∨(Y∨Z)
+		// (X∧Y)∧Z with X∧(Y∧Z)
+		NodeType[] typeList1 = new NodeType[] { NodeType.X, NodeType.Y, NodeType.OR, NodeType.Z, NodeType.OR};
+		PLTreeNodeInterface pltree1 = PLTreeNode.reversePolishBuilder(typeList1);
+		assertEquals("Constructed: " ,"((X∨Y)∨Z)",pltree1.toStringInfix());
+		pltree1.makeAndOrRightDeep();
+		assertEquals("Made : " ,"(X∨(Y∨Z))",pltree1.toStringInfix());
+		
+		
+		NodeType[] typeList2 = new NodeType[] { NodeType.X, NodeType.Y, NodeType.AND, NodeType.Z, NodeType.AND};
+		PLTreeNodeInterface pltree2 = PLTreeNode.reversePolishBuilder(typeList2);
+		assertEquals("Constructed: " ,"((X∧Y)∧Z)",pltree2.toStringInfix());
+		pltree2.makeAndOrRightDeep();
+		assertEquals("Made : " ,"(X∧(Y∧Z))",pltree2.toStringInfix());
+		
 	}
 	
 
@@ -406,26 +438,7 @@ public class PLTreeNodeTest
 		//===========================
 	}
 	
-	@Test
-	public void testMakeAndOrRightDeep()
-	{
-		// (X∨Y)∨Z with X∨(Y∨Z)
-		// (X∧Y)∧Z with X∧(Y∧Z)
-		NodeType[] typeList1 = new NodeType[] { NodeType.X, NodeType.Y, NodeType.OR, NodeType.Z, NodeType.OR};
-		PLTreeNodeInterface pltree1 = PLTreeNode.reversePolishBuilder(typeList1);
-		assertEquals("Constructed: " ,"((X∨Y)∨Z)",pltree1.toStringInfix());
-		pltree1.makeAndOrRightDeep();
-		assertEquals("Made : " ,"(X∨(Y∨Z))",pltree1.toStringInfix());
-		
-		
-		NodeType[] typeList2 = new NodeType[] { NodeType.X, NodeType.Y, NodeType.AND, NodeType.Z, NodeType.AND};
-		PLTreeNodeInterface pltree2 = PLTreeNode.reversePolishBuilder(typeList2);
-		assertEquals("Constructed: " ,"((X∧Y)∧Z)",pltree2.toStringInfix());
-		pltree2.makeAndOrRightDeep();
-		assertEquals("Made : " ,"(X∧(Y∧Z))",pltree2.toStringInfix());
-		
-	}
-	
+
 	@Test
 	public void extraTestsForPushOrBelowAnd()
 	{
@@ -452,22 +465,6 @@ public class PLTreeNodeTest
 		
 	}
 
-	@Test
-	public void testPushOrBelowAnd()
-	{
-		NodeType[] typeList = { NodeType.A, NodeType.B, NodeType.OR, NodeType.NOT };
-		PLTreeNodeInterface pltree = PLTreeNode.reversePolishBuilder(typeList);
-		assertEquals("NOT over OR start", "¬(A∨B)", pltree.toStringInfix());
-		pltree.pushNotDown();
-		assertEquals("NOT over OR", "(¬A∧¬B)", pltree.toStringInfix());
-
-		NodeType[] typeList5 = { NodeType.FALSE, NodeType.NOT, NodeType.TRUE, NodeType.NOT, NodeType.AND, NodeType.TRUE, NodeType.Q,
-				NodeType.NOT, NodeType.AND, NodeType.OR };
-		PLTreeNodeInterface pltree5 = PLTreeNode.reversePolishBuilder(typeList5);
-		assertEquals("complicated start", "((¬⊥∧¬⊤)∨(⊤∧¬Q))", pltree5.toStringInfix());
-		pltree5.pushOrBelowAnd();
-		assertEquals("complicated", "(((¬⊥∨⊤)∧(¬⊤∨⊤))∧((¬⊥∨¬Q)∧(¬⊤∨¬Q)))", pltree5.toStringInfix());
-	}
 
 	@Test
 	public void testPLTreeConstruction()

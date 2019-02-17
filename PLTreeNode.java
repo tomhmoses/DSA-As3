@@ -590,10 +590,7 @@ public final class PLTreeNode implements PLTreeNodeInterface
 		}
 		else
 		{
-			if (this.type.getArity() == 1) {
-				this.child1.pushNotDown();
-			}
-			else if (this.type.getArity() == 2) {
+			if (this.type.getArity() == 2) {
 				this.child1.pushNotDown();
 				this.child2.pushNotDown();
 			} 
