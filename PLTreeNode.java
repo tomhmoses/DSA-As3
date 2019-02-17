@@ -477,6 +477,8 @@ public final class PLTreeNode implements PLTreeNodeInterface
 					this.child2 = null;
 				}
 			}
+			/*
+			//I have removed this bit so that it doesn't shorten and(N,N), or(N,N) or implies(N,N)
 			else if (this.child1.toStringInfix().equals(this.child2.toStringInfix()))
 			{
 				if (this.type.equals(NodeType.AND))
@@ -498,6 +500,7 @@ public final class PLTreeNode implements PLTreeNodeInterface
 					this.child2 = this.child2.child2;
 				}
 			}
+			*/
 			if (this.type.getArity() == 1)
 			{
 				this.child1.evaluateConstantSubtrees();
