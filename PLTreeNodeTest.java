@@ -46,18 +46,74 @@ public class PLTreeNodeTest
 	@Test
 	public void testToStringInfix()
 	{
+		NodeType[] typeList5 = { NodeType.A };
+		PLTreeNodeInterface pltree5 = PLTreeNode.reversePolishBuilder(typeList5);
+		assertEquals("Simple And Infix", "A", pltree5.toStringInfix());
+
+		NodeType[] typeList6 = { NodeType.TRUE };
+		PLTreeNodeInterface pltree6 = PLTreeNode.reversePolishBuilder(typeList6);
+		assertEquals("Simple And Infix", "⊤", pltree6.toStringInfix());
+
+		NodeType[] typeList7 = { NodeType.FALSE };
+		PLTreeNodeInterface pltree7 = PLTreeNode.reversePolishBuilder(typeList7);
+		assertEquals("Simple And Infix", "⊥", pltree7.toStringInfix());
+
+		NodeType[] typeList8 = { NodeType.A, NodeType.NOT };
+		PLTreeNodeInterface pltree8 = PLTreeNode.reversePolishBuilder(typeList8);
+		assertEquals("Simple And Infix", "¬A", pltree8.toStringInfix());
+
 		NodeType[] typeList = { NodeType.R, NodeType.P, NodeType.OR };
 		PLTreeNodeInterface pltree = PLTreeNode.reversePolishBuilder(typeList);
-
 		assertEquals("Simple Or Infix", "(R∨P)", pltree.toStringInfix());
 
 		NodeType[] typeList2 = { NodeType.R, NodeType.P, NodeType.AND };
 		PLTreeNodeInterface pltree2 = PLTreeNode.reversePolishBuilder(typeList2);
 		assertEquals("Simple And Infix", "(R∧P)", pltree2.toStringInfix());
 
+		NodeType[] typeList4 = { NodeType.R, NodeType.P, NodeType.IMPLIES };
+		PLTreeNodeInterface pltree4 = PLTreeNode.reversePolishBuilder(typeList4);
+		assertEquals("Simple And Infix", "(R→P)", pltree4.toStringInfix());
+
 		NodeType[] typeList3 = { NodeType.R, NodeType.P, NodeType.AND, NodeType.Q, NodeType.OR };
 		PLTreeNodeInterface pltree3 = PLTreeNode.reversePolishBuilder(typeList3);
 		assertEquals("Simple Or + And Infix", "((R∧P)∨Q)", pltree3.toStringInfix());
+
+	}
+
+	@Test
+	public void testToStringPrefix()
+	{
+		NodeType[] typeList5 = { NodeType.A };
+		PLTreeNodeInterface pltree5 = PLTreeNode.reversePolishBuilder(typeList5);
+		assertEquals("Simple And Infix", "A", pltree5.toStringPrefix());
+
+		NodeType[] typeList6 = { NodeType.TRUE };
+		PLTreeNodeInterface pltree6 = PLTreeNode.reversePolishBuilder(typeList6);
+		assertEquals("Simple And Infix", "true", pltree6.toStringPrefix());
+
+		NodeType[] typeList7 = { NodeType.FALSE };
+		PLTreeNodeInterface pltree7 = PLTreeNode.reversePolishBuilder(typeList7);
+		assertEquals("Simple And Infix", "false", pltree7.toStringPrefix());
+
+		NodeType[] typeList8 = { NodeType.A, NodeType.NOT };
+		PLTreeNodeInterface pltree8 = PLTreeNode.reversePolishBuilder(typeList8);
+		assertEquals("Simple And Infix", "not(A)", pltree8.toStringPrefix());
+
+		NodeType[] typeList = { NodeType.R, NodeType.P, NodeType.OR };
+		PLTreeNodeInterface pltree = PLTreeNode.reversePolishBuilder(typeList);
+		assertEquals("Simple Or Infix", "or(R,P)", pltree.toStringPrefix());
+
+		NodeType[] typeList2 = { NodeType.R, NodeType.P, NodeType.AND };
+		PLTreeNodeInterface pltree2 = PLTreeNode.reversePolishBuilder(typeList2);
+		assertEquals("Simple And Infix", "and(R,P)", pltree2.toStringPrefix());
+
+		NodeType[] typeList4 = { NodeType.R, NodeType.P, NodeType.IMPLIES };
+		PLTreeNodeInterface pltree4 = PLTreeNode.reversePolishBuilder(typeList4);
+		assertEquals("Simple And Infix", "implies(R,P)", pltree4.toStringPrefix());
+
+		NodeType[] typeList3 = { NodeType.R, NodeType.P, NodeType.AND, NodeType.Q, NodeType.OR };
+		PLTreeNodeInterface pltree3 = PLTreeNode.reversePolishBuilder(typeList3);
+		assertEquals("Simple Or + And Infix", "or(and(R,P),Q)", pltree3.toStringPrefix());
 
 	}
 
